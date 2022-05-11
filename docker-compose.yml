@@ -1,0 +1,34 @@
+version: "3"
+services:
+  frontend:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./frontend
+    volumes:
+      - /src/node_modules
+      - ./frontend:/src
+    stdin_open: true
+
+  nginx: 
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports: 
+      - "3000:80"
+
+  backend:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./backend
+    volumes:
+      - /src/node_modules
+      - ./backend:/src
+    
+  python:
+    build:
+      dockerfile: Dockerfile
+      context: ./python
+    tty: true
+    volumes:
+      - ./python:/src
